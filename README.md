@@ -28,4 +28,9 @@ Example:
 OBSDEF:DefaultScene
 ```
 
+1. Go to https://visualstudio.microsoft.com/downloads/?q=build+tools and get the `vs_BuildTools.exe` file.
+2. Execute `vs_buildtools.exe --add Microsoft.VisualStudio.Workload.MSBuildTools`
+3. A GUI will pop up and you must hit a few buttons.
+4. MSBuild.exe will be installed into `C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin` and you need to add that to your PATH
+
 
