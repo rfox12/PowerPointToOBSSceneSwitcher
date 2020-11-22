@@ -14,6 +14,12 @@ namespace PowerPointToOBSSceneSwitcher
         {
             Console.Write("Connecting to PowerPoint...");
             ppt.SlideShowNextSlide += App_SlideShowNextSlide;
+            // https://docs.microsoft.com/en-us/previous-versions/office/developer/office-2003/aa211571(v=office.11)
+            // ppt.SlideShowNextClick += App_SlideShowNextClick;  // This event fires on every slide click (even those that don't progress to next slide)
+            // ppt.SlideShowNextBuild += App_SlideShowNextBuild;  // Not sure what this even does
+            
+            ppt.PresentationCloseFinal += App_PresentationCloseFinal;
+            // ppt.SlideShowEnd += App_SlideShowEnd;
             Console.WriteLine("connected");
 
             Console.Write("Connecting to OBS...");
@@ -26,12 +32,41 @@ namespace PowerPointToOBSSceneSwitcher
             Console.ReadLine();
         }
 
+        // async static void App_SlideShowNextClick(SlideShowWindow Wn, Effect eff)
+        // {
+        //     if (Wn != null)
+        //     {
+        //         Console.WriteLine($"{DateTime.Now.ToString("hh:mm:ss.fff tt")} Click for Slide Number {Wn.View.Slide.SlideNumber}");
+        //     }
+        // }
+
+        // async static void App_SlideShowNextBuild(SlideShowWindow Wn)
+        // {
+        //     if (Wn != null)
+        //     {
+        //         Console.WriteLine($"{DateTime.Now.ToString("hh:mm:ss.fff tt")} Build for Slide Number {Wn.View.Slide.SlideNumber}");
+        //     }
+        // }
+
+        static void App_PresentationCloseFinal(Presentation p)
+        {
+            Console.WriteLine("PowerPoint closed!");
+            // OBS will disconnect automatically when disposed
+            System.Environment.Exit(0);
+        }
+
+        // static void App_SlideShowEnd(Presentation p)
+        // {
+        //     Console.WriteLine("Slide show ended!");
+        //     // OBS will disconnect automatically when disposed
+        //     System.Environment.Exit(0);
+        // }
 
         async static void App_SlideShowNextSlide(SlideShowWindow Wn)
         {
             if (Wn != null)
             {
-                Console.WriteLine($"Moved to Slide Number {Wn.View.Slide.SlideNumber}");
+                Console.WriteLine($"{DateTime.Now.ToString("hh:mm:ss.fff tt")} Moved to Slide Number {Wn.View.Slide.SlideNumber}");
                 //Text starts at Index 2 ¯\_(ツ)_/¯
                 var note = String.Empty;
                 try { note = Wn.View.Slide.NotesPage.Shapes[2].TextFrame.TextRange.Text; }
